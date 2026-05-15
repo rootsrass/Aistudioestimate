@@ -74,7 +74,7 @@ export default function App() {
                 </li>
                 <li className="flex gap-3">
                   <span className="font-mono text-indigo-400">04</span>
-                  <span>Once the build finishes (~5m), tap the Run &rarr; scroll to **Artifacts** &rarr; download **app-debug.apk**.</span>
+                  <span>Once the build finishes (~5m), tap the Run &rarr; scroll to **Artifacts** &rarr; download **app-debug.apk**. (Build configured to use system Gradle for reliability).</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="font-mono text-indigo-400">05</span>
