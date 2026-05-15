@@ -23,8 +23,11 @@ jobs:
       with:
         gradle-version: 8.2
 
-    - name: Build with Gradle
-      run: gradle assembleDebug
+    - name: Build with Gradle (Debug)
+      run: gradle assembleDebug --info --stacktrace
+      # Options explained:
+      # --info: Detailed logging output
+      # --stacktrace: Full exception stack traces
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
