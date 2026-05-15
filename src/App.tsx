@@ -33,21 +33,22 @@ export default function App() {
           {/* Status Column */}
           <div className="lg:col-span-4 space-y-8">
             <div>
-              <h2 className="text-sm font-bold uppercase tracking-widest text-indigo-600 mb-4">Phase 9: Scalability</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-indigo-600 mb-4">Phase 10: Production & CI</h2>
               <h1 className="text-4xl font-medium tracking-tight text-neutral-900 leading-[1.1]">
-                Service Plugin <br/> Architecture
+                CI/CD Optimization <br/> & Build Fixes
               </h1>
               <p className="mt-4 text-neutral-600 leading-relaxed">
-                The core engine has been refactored into a registry-based strategy pattern. This allows adding new services (Pavers, Irrigation) by simply registering a new calculator, without touching core logic.
+                The build pipeline has been patched. AndroidX flags were added to gradle.properties to ensure compatibility with modern Jetpack libraries during the GitHub Actions run.
               </p>
             </div>
 
             <div className="space-y-3">
-              <StatusItem label="Strategy Pattern (ServiceCalculator)" completed />
-              <StatusItem label="ServiceRegistry Implementation" completed />
-              <StatusItem label="Dagger Multibindings-Ready DI" completed />
-              <StatusItem label="Decoupled Domain/UI Logic" completed />
-              <StatusItem label="Production Hardening (Next)" />
+              <StatusItem label="Room Persistence (CRUD)" completed />
+              <StatusItem label="Saved Estimates Lazy List" completed />
+              <StatusItem label="AndroidX & Jetifier Config" completed />
+              <StatusItem label="GitHub Actions v4 Workflow" completed />
+              <StatusItem label="Currency & Date Formatting" completed />
+              <StatusItem label="Production APK Ready" completed />
             </div>
           </div>
 
