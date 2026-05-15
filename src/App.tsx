@@ -70,7 +70,7 @@ export default function App() {
                 </li>
                 <li className="flex gap-3">
                   <span className="font-mono text-indigo-400">03</span>
-                  <span>Open **GitHub.com** on your phone, go to the **Actions** tab of your repo.</span>
+                  <span>Open **GitHub.com** on your phone, go to the **Actions** tab. If it fails, ensure `gradlew` has execute permissions.</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="font-mono text-indigo-400">04</span>
