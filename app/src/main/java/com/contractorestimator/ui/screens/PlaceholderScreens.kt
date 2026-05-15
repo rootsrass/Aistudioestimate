@@ -139,7 +139,7 @@ fun NewEstimateScreen(
             }
 
             // Labor
-            Divider()
+            HorizontalDivider()
             Text("Labor Configuration", style = MaterialTheme.typography.titleSmall)
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 OutlinedTextField(
@@ -212,7 +212,7 @@ fun SummaryScreen(
             SummaryRow("Adjusted Sq Ft (+10%)", "${result.adjustedSqFt.toInt()} sq ft")
             SummaryRow("Labor Cost", currencyFormat.format(result.laborCost))
             SummaryRow("Difficulty Multiplier", "x${uiState.difficulty.modifier}")
-            Divider()
+            HorizontalDivider()
             SummaryRow("Profit Margin (20%)", currencyFormat.format(result.profitAmount))
             SummaryRow("Estimated Tax", currencyFormat.format(result.taxAmount))
 
@@ -319,7 +319,7 @@ fun SettingsScreen(navController: NavController) {
 }
 
 @Composable
-fun SettingsInput(label: string, value: String, suffix: String) {
+fun SettingsInput(label: String, value: String, suffix: String) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,

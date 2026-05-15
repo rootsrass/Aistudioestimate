@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Calculate
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -28,12 +32,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-sealed class Screen(val route: String, val title: String) {
-    object Home : Screen("home", "Dashboard")
-    object NewEstimate : Screen("new_estimate", "New Estimate")
-    object Summary : Screen("summary/{estimateId}", "Summary")
-    object SavedEstimates : Screen("saved_estimates", "History")
-    object Settings : Screen("settings", "Settings")
+sealed class Screen(val route: String, val title: String, val icon: androidx.compose.ui.graphics.vector.ImageVector) {
+    object Home : Screen("home", "Dashboard", Icons.Default.Calculate)
+    object NewEstimate : Screen("new_estimate", "New Estimate", Icons.Default.Calculate)
+    object Summary : Screen("summary/{estimateId}", "Summary", Icons.Default.Calculate)
+    object SavedEstimates : Screen("saved_estimates", "History", Icons.Default.History)
+    object Settings : Screen("settings", "Settings", Icons.Default.Settings)
 }
 
 @Composable
@@ -50,7 +54,7 @@ fun MainScreen() {
                 
                 items.forEach { screen ->
                     NavigationBarItem(
-                        icon = { /* Icon here */ },
+                        icon = { Icon(screen.icon, contentDescription = null) },
                         label = { Text(screen.title) },
                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                         onClick = {

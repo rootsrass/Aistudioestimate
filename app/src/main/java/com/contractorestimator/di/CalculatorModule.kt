@@ -2,6 +2,7 @@ package com.contractorestimator.di
 
 import com.contractorestimator.domain.calculator.ServiceCalculator
 import com.contractorestimator.domain.calculator.SodCalculator
+import com.contractorestimator.domain.registry.ServiceRegistry
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
