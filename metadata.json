@@ -1,0 +1,8 @@
+{
+  "name": "Contractor Estimate Pro",
+  "description": "A production-ready contractor tool for generating job estimates, starting with sod installation. Built with Kotlin, Jetpack Compose, and MVVM.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
