@@ -240,6 +240,7 @@ fun SummaryRow(label: String, value: String) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SavedEstimatesScreen(
     navController: NavController,
@@ -291,6 +292,7 @@ fun SavedEstimatesScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(navController: NavController) {
     Scaffold(
