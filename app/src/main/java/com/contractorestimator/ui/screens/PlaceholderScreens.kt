@@ -1,6 +1,5 @@
 package com.contractorestimator.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,7 +28,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: EstimateViewModel) {
     Column(
         modifier = Modifier.fillMaxSize().padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,7 +54,10 @@ fun HomeScreen(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(48.dp))
         Button(
-            onClick = { navController.navigate("new_estimate") },
+            onClick = { 
+                viewModel.clearEstimate()
+                navController.navigate("new_estimate") 
+            },
             modifier = Modifier.fillMaxWidth().height(56.dp),
             shape = MaterialTheme.shapes.medium
         ) {
@@ -78,7 +80,7 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun NewEstimateScreen(
     navController: NavController,
-    viewModel: EstimateViewModel = hiltViewModel()
+    viewModel: EstimateViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
@@ -106,7 +108,7 @@ fun NewEstimateScreen(
             )
 
             OutlinedTextField(
-                value = if (uiState.squareFootage == 0.0) "" else uiState.squareFootage.toString(),
+                value = uiState.squareFootage,
                 onValueChange = { viewModel.onSqFtChange(it) },
                 label = { Text("Total Square Footage") },
                 modifier = Modifier.fillMaxWidth(),
@@ -144,15 +146,15 @@ fun NewEstimateScreen(
             Text("Labor Configuration", style = MaterialTheme.typography.titleSmall)
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 OutlinedTextField(
-                    value = uiState.workers.toString(),
-                    onValueChange = { viewModel.onLaborUpdate(it.toIntOrNull() ?: 0, uiState.hourlyRate, uiState.hours) },
+                    value = uiState.workers,
+                    onValueChange = { viewModel.onLaborUpdate(it, uiState.hourlyRate, uiState.hours) },
                     label = { Text("Crew Size") },
                     modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
                 OutlinedTextField(
-                    value = uiState.hours.toString(),
-                    onValueChange = { viewModel.onLaborUpdate(uiState.workers, uiState.hourlyRate, it.toDoubleOrNull() ?: 0.0) },
+                    value = uiState.hours,
+                    onValueChange = { viewModel.onLaborUpdate(uiState.workers, uiState.hourlyRate, it) },
                     label = { Text("Est. Hours") },
                     modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -178,10 +180,23 @@ fun NewEstimateScreen(
 fun SummaryScreen(
     navController: NavController,
     estimateId: String?,
-    viewModel: EstimateViewModel = hiltViewModel()
+    viewModel: EstimateViewModel
 ) {
+    LaunchedEffect(estimateId) {
+        if (estimateId != null && estimateId != "new") {
+            viewModel.loadEstimate(estimateId)
+        }
+    }
+
     val uiState by viewModel.uiState.collectAsState()
-    val result = uiState.lastResult ?: return
+    val result = uiState.lastResult
+    
+    if (result == null) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
+    }
     
     val currencyFormat = remember { NumberFormat.getCurrencyInstance(Locale.US) }
 
@@ -241,11 +256,10 @@ fun SummaryRow(label: String, value: String) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SavedEstimatesScreen(
     navController: NavController,
-    viewModel: EstimateViewModel = hiltViewModel()
+    viewModel: EstimateViewModel
 ) {
     val estimates by viewModel.savedEstimates.collectAsState()
     val currencyFormat = remember { NumberFormat.getCurrencyInstance(Locale.US) }
@@ -293,7 +307,6 @@ fun SavedEstimatesScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(navController: NavController) {
     Scaffold(
