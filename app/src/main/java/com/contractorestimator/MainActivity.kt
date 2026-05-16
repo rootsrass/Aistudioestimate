@@ -18,7 +18,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import com.contractorestimator.ui.screens.*
 import com.contractorestimator.ui.theme.ContractorEstimatorTheme
-import com.contractorestimator.ui.viewmodel.EstimateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,7 +43,6 @@ sealed class Screen(val route: String, val title: String, val icon: androidx.com
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    val estimateViewModel: EstimateViewModel = androidx.hilt.navigation.compose.hiltViewModel()
     
     Scaffold(
         bottomBar = {
@@ -78,13 +76,13 @@ fun MainScreen() {
             startDestination = Screen.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Screen.Home.route) { HomeScreen(navController, estimateViewModel) }
-            composable(Screen.NewEstimate.route) { NewEstimateScreen(navController, estimateViewModel) }
+            composable(Screen.Home.route) { HomeScreen(navController) }
+            composable(Screen.NewEstimate.route) { NewEstimateScreen(navController) }
             composable(Screen.Summary.route) { backStackEntry ->
                 val id = backStackEntry.arguments?.getString("estimateId")
-                SummaryScreen(navController, id, estimateViewModel)
+                SummaryScreen(navController, id)
             }
-            composable(Screen.SavedEstimates.route) { SavedEstimatesScreen(navController, estimateViewModel) }
+            composable(Screen.SavedEstimates.route) { SavedEstimatesScreen(navController) }
             composable(Screen.Settings.route) { SettingsScreen(navController) }
         }
     }
