@@ -46,8 +46,8 @@ export default function App() {
               <StatusItem label="Room Persistence (CRUD)" completed />
               <StatusItem label="Saved Estimates Lazy List" completed />
               <StatusItem label="AndroidX & Jetifier Config" completed />
+              <StatusItem label="Material3 Theme Resources" completed />
               <StatusItem label="GitHub Actions v4 Workflow" completed />
-              <StatusItem label="Currency & Date Formatting" completed />
               <StatusItem label="Production APK Ready" completed />
             </div>
           </div>
