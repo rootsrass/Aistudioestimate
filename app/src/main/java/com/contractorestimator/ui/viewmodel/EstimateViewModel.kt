@@ -29,7 +29,8 @@ class EstimateViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun onSqFtChange(valStr: String) {
-        _uiState.value = _uiState.value.copy(squareFootage = valStr)
+        val value = valStr.toDoubleOrNull() ?: 0.0
+        _uiState.value = _uiState.value.copy(squareFootage = value)
     }
 
     fun onCustomerNameChange(name: String) {
@@ -47,7 +48,7 @@ class EstimateViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(difficulty = difficulty)
     }
 
-    fun onLaborUpdate(workers: String, rate: String, hours: String) {
+    fun onLaborUpdate(workers: Int, rate: Double, hours: Double) {
         _uiState.value = _uiState.value.copy(
             workers = workers,
             hourlyRate = rate,
@@ -55,35 +56,13 @@ class EstimateViewModel @Inject constructor(
         )
     }
 
-    fun loadEstimate(id: String) {
-        viewModelScope.launch {
-            val estimate = repository.getEstimateById(id)
-            if (estimate != null) {
-                _uiState.value = _uiState.value.copy(
-                    customerName = estimate.customerName,
-                    squareFootage = estimate.input.squareFootage.toString(),
-                    sodType = estimate.input.sodType,
-                    difficulty = estimate.input.difficulty,
-                    workers = estimate.input.laborConfig.numberOfWorkers.toString(),
-                    hourlyRate = estimate.input.laborConfig.hourlyRate.toString(),
-                    hours = estimate.input.laborConfig.estimatedHours.toString(),
-                    lastResult = estimate.result
-                )
-            }
-        }
-    }
-
-    fun clearEstimate() {
-        _uiState.value = EstimateUiState()
-    }
-
     fun calculateEstimate() {
         val state = _uiState.value
         val input = EstimateInput(
-            squareFootage = state.squareFootage.toDoubleOrNull() ?: 0.0,
+            squareFootage = state.squareFootage,
             sodType = state.sodType,
             difficulty = state.difficulty,
-            laborConfig = LaborConfig(state.workers.toIntOrNull() ?: 0, state.hourlyRate.toDoubleOrNull() ?: 0.0, state.hours.toDoubleOrNull() ?: 0.0),
+            laborConfig = LaborConfig(state.workers, state.hourlyRate, state.hours),
             pricingConfig = PricingConfig(costPerSqFt = state.costPerSqFt)
         )
         
@@ -100,10 +79,10 @@ class EstimateViewModel @Inject constructor(
                 customerName = state.customerName.ifBlank { "Unsaved Customer" },
                 serviceType = ServiceType.SOD_INSTALLATION,
                 input = EstimateInput(
-                    squareFootage = state.squareFootage.toDoubleOrNull() ?: 0.0,
+                    squareFootage = state.squareFootage,
                     sodType = state.sodType,
                     difficulty = state.difficulty,
-                    laborConfig = LaborConfig(state.workers.toIntOrNull() ?: 0, state.hourlyRate.toDoubleOrNull() ?: 0.0, state.hours.toDoubleOrNull() ?: 0.0),
+                    laborConfig = LaborConfig(state.workers, state.hourlyRate, state.hours),
                     pricingConfig = PricingConfig(costPerSqFt = state.costPerSqFt)
                 ),
                 result = result
@@ -121,12 +100,12 @@ class EstimateViewModel @Inject constructor(
 
 data class EstimateUiState(
     val customerName: String = "",
-    val squareFootage: String = "",
+    val squareFootage: Double = 0.0,
     val sodType: String = "Bahia",
     val costPerSqFt: Double = 0.35,
     val difficulty: Difficulty = Difficulty.MODERATE,
-    val workers: String = "2",
-    val hourlyRate: String = "25.0",
-    val hours: String = "8.0",
+    val workers: Int = 2,
+    val hourlyRate: Double = 25.0,
+    val hours: Double = 8.0,
     val lastResult: EstimateResult? = null
 )

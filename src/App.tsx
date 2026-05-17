@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
 import { motion } from "motion/react";
 import { Layout, FileCode, Smartphone, CheckCircle2, History, Settings } from "lucide-react";
 
